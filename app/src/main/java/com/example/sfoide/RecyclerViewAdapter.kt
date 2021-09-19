@@ -3,7 +3,6 @@ package com.example.sfoide
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -36,7 +35,7 @@ class RecyclerViewAdapter : ListAdapter<UserData.Result, RecyclerView.ViewHolder
         val inflater = LayoutInflater.from(parent.context)
         val binding: UserItemBinding = UserItemBinding.inflate(inflater, parent, false)
         binding.root.setOnClickListener {
-            Toast.makeText(parent.context, "${binding.tvUserName}", Toast.LENGTH_SHORT).show()
+
         }
         return UserViewHolder(binding)
     }

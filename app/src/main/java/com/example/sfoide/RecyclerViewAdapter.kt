@@ -1,6 +1,7 @@
 package com.example.sfoide
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,11 +11,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.sfoide.databinding.UserItemBinding
 import com.example.sfoide.entities.UserData
+import com.example.sfoide.ui.UserDetail
+import kotlinx.coroutines.coroutineScope
 
+private lateinit var data: UserData.Result
 class RecyclerViewAdapter : ListAdapter<UserData.Result, RecyclerView.ViewHolder>(UserDiffCallback) {
     class UserViewHolder(private val binding: UserItemBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
         fun bind(item: UserData.Result) {
+            data = item
             with(binding) {
                 Glide.with(ivUserImage)
                     .load(item.picture.thumbnail)
@@ -35,7 +40,9 @@ class RecyclerViewAdapter : ListAdapter<UserData.Result, RecyclerView.ViewHolder
         val inflater = LayoutInflater.from(parent.context)
         val binding: UserItemBinding = UserItemBinding.inflate(inflater, parent, false)
         binding.root.setOnClickListener {
-
+            val intent = Intent(parent.context, UserDetail::class.java)
+//            intent.putExtra("userData", arrayListOf(data))
+            parent.context.startActivity(intent)
         }
         return UserViewHolder(binding)
     }

@@ -23,21 +23,16 @@ class MainActivity : AppCompatActivity() {
         val result = NetworkManager.UserApi.getUserList(10)
         recyclerView.adapter = adapter
 
-        adapter.submitList(getResult(result))
-
-    }
-
-    private fun getResult(result: Call<UserData>): List<UserData.Result> {
-        lateinit var resultsData: List<UserData.Result>
         result.enqueue(object : Callback<UserData> {
             override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
-                resultsData = response.body()!!.results
+                adapter.submitList(response.body()!!.results)
             }
 
             override fun onFailure(call: Call<UserData>, t: Throwable) {
                 Log.d(TAG, "실패 이유는 ${t.message}입니다.")
             }
         })
-        return resultsData
+
     }
+
 }

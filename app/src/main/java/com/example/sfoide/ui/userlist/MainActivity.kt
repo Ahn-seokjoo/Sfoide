@@ -4,6 +4,7 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sfoide.R
@@ -16,6 +17,8 @@ import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
     val adapter = RecyclerViewAdapter(::showUserDetail)
+    private var backPressedTime: Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -40,5 +43,14 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, UserDetailActivity::class.java)
         intent.putExtra("userData", item)
         startActivity(intent)
+    }
+
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() - backPressedTime < 2000) {
+            finish()
+            return
+        }
+        Toast.makeText(this, "뒤로 버튼을 한번 더 누르면 종료", Toast.LENGTH_SHORT).show()
+        backPressedTime = System.currentTimeMillis()
     }
 }

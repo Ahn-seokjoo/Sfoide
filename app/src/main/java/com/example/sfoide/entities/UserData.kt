@@ -33,7 +33,7 @@ data class UserData(
         @SerializedName("gender")
         val gender: String,
         @SerializedName("id")
-        val id: Id,
+        val id: Id?,
         @SerializedName("location")
         val location: Location?,
         @SerializedName("login")

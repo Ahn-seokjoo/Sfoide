@@ -1,9 +1,7 @@
 package com.example.sfoide.ui.userdetail
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -22,7 +20,6 @@ class UserDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val item = intent.getParcelableExtra<UserData.Result>("userData")
-        Log.d(TAG, "onCreate: $item")
 
         with(binding) {
             Glide.with(ivDetailUserImage)
@@ -30,7 +27,7 @@ class UserDetailActivity : AppCompatActivity() {
                 .transform(CircleCrop())
                 .into(ivDetailUserImage)
 
-            tvDetailEmail.text = ("\uD83D\uDCE7" + "${item?.email}")
+            tvDetailEmail.text = ("\uD83D\uDCE7" + item?.email)
             tvDetailHomeNumber.text = ("\u260E\uFE0F" + item?.cell)
             tvDetailPhoneNumber.text = ("\uD83D\uDCF1" + item?.phone)
             val name = item?.name?.last + item?.name?.first

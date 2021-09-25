@@ -1,6 +1,9 @@
 package com.example.sfoide.entities
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 data class UserData(
     @SerializedName("info")
@@ -16,14 +19,15 @@ data class UserData(
         @SerializedName("seed")
         val seed: String,
         @SerializedName("version")
-        val version: String,
+        val version: String?,
     )
 
+    @Parcelize
     data class Result(
         @SerializedName("cell")
         val cell: String,
         @SerializedName("dob")
-        val dob: Dob,
+        val dob: Dob?,
         @SerializedName("email")
         val email: String,
         @SerializedName("gender")
@@ -31,7 +35,7 @@ data class UserData(
         @SerializedName("id")
         val id: Id,
         @SerializedName("location")
-        val location: Location,
+        val location: Location?,
         @SerializedName("login")
         val login: Login,
         @SerializedName("name")
@@ -44,21 +48,24 @@ data class UserData(
         val picture: Picture,
         @SerializedName("registered")
         val registered: Registered,
-    ) {
+    ) : Parcelable {
+        @Parcelize
         data class Dob(
             @SerializedName("age")
             val age: Int,
             @SerializedName("date")
             val date: String,
-        )
+        ) : Parcelable
 
+        @Parcelize
         data class Id(
             @SerializedName("name")
             val name: String,
             @SerializedName("value")
-            val value: Any,
-        )
+            val value: @RawValue Any,
+        ) : Parcelable
 
+        @Parcelize
         data class Location(
             @SerializedName("city")
             val city: String,
@@ -74,29 +81,33 @@ data class UserData(
             val street: Street,
             @SerializedName("timezone")
             val timezone: Timezone,
-        ) {
+        ) : Parcelable {
+            @Parcelize
             data class Coordinates(
                 @SerializedName("latitude")
                 val latitude: String,
                 @SerializedName("longitude")
                 val longitude: String,
-            )
+            ) : Parcelable
 
+            @Parcelize
             data class Street(
                 @SerializedName("name")
                 val name: String,
                 @SerializedName("number")
                 val number: Int,
-            )
+            ) : Parcelable
 
+            @Parcelize
             data class Timezone(
                 @SerializedName("description")
                 val description: String,
                 @SerializedName("offset")
                 val offset: String,
-            )
+            ) : Parcelable
         }
 
+        @Parcelize
         data class Login(
             @SerializedName("md5")
             val md5: String,
@@ -112,8 +123,9 @@ data class UserData(
             val username: String,
             @SerializedName("uuid")
             val uuid: String,
-        )
+        ) : Parcelable
 
+        @Parcelize
         data class Name(
             @SerializedName("first")
             val first: String,
@@ -121,8 +133,9 @@ data class UserData(
             val last: String,
             @SerializedName("title")
             val title: String,
-        )
+        ) : Parcelable
 
+        @Parcelize
         data class Picture(
             @SerializedName("large")
             val large: String,
@@ -130,13 +143,14 @@ data class UserData(
             val medium: String,
             @SerializedName("thumbnail")
             val thumbnail: String,
-        )
+        ) : Parcelable
 
+        @Parcelize
         data class Registered(
             @SerializedName("age")
             val age: Int,
             @SerializedName("date")
             val date: String,
-        )
+        ) : Parcelable
     }
 }

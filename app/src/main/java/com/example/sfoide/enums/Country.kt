@@ -1,7 +1,7 @@
 package com.example.sfoide.enums
 
 enum class Country(val country: String, val countryEmoji: String) {
-    UNKOWN("", ""),
+    UNKNOWN("", ""),
     AU("Australia", "\uD83C\uDDE6\uD83C\uDDFA"),
     BR("Brazil", "\uD83C\uDDE7\uD83C\uDDF7"),
     CA("Canada", "\uD83C\uDDE8\uD83C\uDDE6"),
@@ -40,7 +40,7 @@ enum class Country(val country: String, val countryEmoji: String) {
                 NZ.country -> NZ.countryEmoji
                 TR.country -> TR.countryEmoji
                 US.country -> US.countryEmoji
-                else -> UNKOWN.countryEmoji // United States
+                else -> UNKNOWN.countryEmoji // United States
             }
         }
     }

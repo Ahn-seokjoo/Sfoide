@@ -31,18 +31,6 @@
                 android:textSize="20sp"
                 tools:text="1asf123 (63)" />
 
-            <TextView
-                android:id="@+id/tv_emoji"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:text="emoji" />
-
-            <TextView
-                android:id="@+id/tv_country_emoji"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                tools:text="country_emoji" />
         </LinearLayout>
 
         <TextView
@@ -69,12 +57,12 @@
 
     </LinearLayout>
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent">-->
+    <!--    <LinearLayout-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent">-->
 
-<!--&lt;!&ndash;        <fragment&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
-<!--&lt;!&ndash;            android:layout_height="match_parent" />&ndash;&gt;-->
-<!--    </LinearLayout>-->
+    <!--&lt;!&ndash;        <fragment&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;            android:layout_height="match_parent" />&ndash;&gt;-->
+    <!--    </LinearLayout>-->
 </LinearLayout>

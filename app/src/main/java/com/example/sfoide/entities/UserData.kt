@@ -47,7 +47,7 @@ data class UserData(
         @SerializedName("picture")
         val picture: Picture,
         @SerializedName("registered")
-        val registered: Registered,
+        val registered: Registered?,
     ) : Parcelable {
         @Parcelize
         data class Dob(

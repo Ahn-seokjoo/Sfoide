@@ -33,7 +33,8 @@ class UserDetailActivity : AppCompatActivity() {
             val name = item?.name?.last + item?.name?.first
             val gender = Gender.getGender(item!!.gender)
             val country = Country.getCountry(item.location!!.country)
-            tvUserDetailNameText.text = name + "(${item.dob?.age})" + gender + country
+            tvUserDetailNameText.text = name + "(${item.dob?.age})" +
+                    gender + country
         }
     }
 }

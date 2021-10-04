@@ -70,5 +70,6 @@ class MainActivity : AppCompatActivity() {
         }
         Toast.makeText(this, "뒤로 버튼을 한번 더 누르면 종료", Toast.LENGTH_SHORT).show()
         backPressedTime = System.currentTimeMillis()
+
     }
 }

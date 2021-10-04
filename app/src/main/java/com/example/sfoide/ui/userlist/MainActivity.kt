@@ -28,14 +28,27 @@ class MainActivity : AppCompatActivity() {
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
         val swipe = findViewById<SwipeRefreshLayout>(R.id.swipeLayout)
-        val result = NetworkManager.UserApi.getUserList(3)
+        val result = NetworkManager.UserApi.getUserList(9)
         recyclerView.adapter = adapter
 
         lifecycleScope.launch {
             doEnqueue(result)
         }
         doRefresh(swipe, result)
+        initScrollListener(result)
+    }
 
+    private fun initScrollListener(result: Call<UserData>) {
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (recyclerView.canScrollVertically(1)) {
+                    doEnqueue(result)
+                }
+            }
+        }
+        )
     }
 
     private fun showUserDetail(item: UserData.Result) {

@@ -54,15 +54,5 @@
             android:textSize="15sp"
             tools:text="011-1234-5678" />
 
-
     </LinearLayout>
-
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent">-->
-
-    <!--&lt;!&ndash;        <fragment&ndash;&gt;-->
-    <!--&lt;!&ndash;            android:layout_width="match_parent"&ndash;&gt;-->
-    <!--&lt;!&ndash;            android:layout_height="match_parent" />&ndash;&gt;-->
-    <!--    </LinearLayout>-->
 </LinearLayout>

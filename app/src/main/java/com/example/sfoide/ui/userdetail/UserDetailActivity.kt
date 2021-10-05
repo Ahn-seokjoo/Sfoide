@@ -39,30 +39,28 @@ class UserDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 .transform(CircleCrop())
                 .into(ivDetailUserImage)
 
-            tvDetailEmail.text = ("\uD83D\uDCE7" + item?.email)
-            tvDetailHomeNumber.text = ("\u260E\uFE0F" + item?.cell)
-            tvDetailPhoneNumber.text = ("\uD83D\uDCF1" + item?.phone)
             val name = item?.name?.last + item?.name?.first
             val gender = Gender.getGender(item!!.gender)
             val country = Country.getCountry(item.location!!.country)
-            tvUserDetailNameText.text = name + "(${item.dob?.age})" +
-                    gender + country
+            tvUserDetailNameText.text = "$name ${item.dob?.age} $gender $country"
+            tvDetailEmail.text = "\uD83D\uDCE7 ${item?.email}"
+            tvDetailHomeNumber.text = "\u260E\uFE0F ${item?.cell}"
+            tvDetailPhoneNumber.text = "\uD83D\uDCF1 ${item?.phone}"
         }
         initIntent(item)
     }
 
     private fun initIntent(item: UserData.Result?) {
         binding.tvDetailPhoneNumber.setOnClickListener {
-            val callIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:{item?.phone}"))
+            val callIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${item?.phone}"))
             startActivity(callIntent)
         }
 
         binding.tvDetailEmail.setOnClickListener {
             var addresses = arrayOf(item?.email)
             val emailIntent = Intent(Intent.ACTION_SEND).apply {
-                `package` = "com.google.android.gm"
                 putExtra(Intent.EXTRA_EMAIL, addresses)
-                type = "*/*"
+                type = "plain/text"
             }
             startActivity(emailIntent)
         }

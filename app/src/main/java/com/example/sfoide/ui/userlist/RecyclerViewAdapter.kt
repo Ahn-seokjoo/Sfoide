@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sfoide.databinding.UserItemBinding
+import com.example.sfoide.databinding.ItemUserBinding
 import com.example.sfoide.entities.UserData
 
 class RecyclerViewAdapter(
@@ -14,7 +14,7 @@ class RecyclerViewAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding: UserItemBinding = UserItemBinding.inflate(inflater, parent, false)
+        val binding: ItemUserBinding = ItemUserBinding.inflate(inflater, parent, false)
         return UserViewHolder(binding, onItemClick)
     }
 

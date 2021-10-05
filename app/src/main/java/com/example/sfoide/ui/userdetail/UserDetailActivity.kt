@@ -47,10 +47,10 @@ class UserDetailActivity : AppCompatActivity(), OnMapReadyCallback {
             tvDetailHomeNumber.text = "\u260E\uFE0F ${item?.cell}"
             tvDetailPhoneNumber.text = "\uD83D\uDCF1 ${item?.phone}"
         }
-        initIntent(item)
+        setViewIntentClickListener(item)
     }
 
-    private fun initIntent(item: UserData.Result?) {
+    private fun setViewIntentClickListener(item: UserData.Result?) {
         binding.tvDetailPhoneNumber.setOnClickListener {
             val callIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${item?.phone}"))
             startActivity(callIntent)

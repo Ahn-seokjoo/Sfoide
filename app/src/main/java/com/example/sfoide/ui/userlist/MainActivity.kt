@@ -8,7 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.sfoide.R
+import com.example.sfoide.databinding.ActivityMainBinding
 import com.example.sfoide.entities.UserData
 import com.example.sfoide.remote.NetworkManager
 import com.example.sfoide.ui.userdetail.UserDetailActivity
@@ -17,27 +17,25 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     private val adapter = UserListRecyclerViewAdapter(::showUserDetail)
     private var backPressedTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        val swipe = findViewById<SwipeRefreshLayout>(R.id.swipeLayout)
         val result = NetworkManager.UserApi.getUserList(6)
-        recyclerView.adapter = adapter
+        binding.recyclerView.adapter = adapter
 
         doEnqueue(result)
-
-        doRefresh(swipe, result)
+        doRefresh(binding.swipeLayout, result)
         initScrollListener(result)
     }
 
     private fun initScrollListener(result: Call<UserData>) {
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (recyclerView.canScrollVertically(1)) {

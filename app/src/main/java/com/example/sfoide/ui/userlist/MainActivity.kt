@@ -17,7 +17,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
-    private val adapter = RecyclerViewAdapter(::showUserDetail)
+    private val adapter = UserListRecyclerViewAdapter(::showUserDetail)
     private var backPressedTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {

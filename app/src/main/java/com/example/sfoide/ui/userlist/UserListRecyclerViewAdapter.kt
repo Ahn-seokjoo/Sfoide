@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.sfoide.databinding.ItemUserBinding
 import com.example.sfoide.entities.UserData
 
-class RecyclerViewAdapter(
+class UserListRecyclerViewAdapter(
     private val onItemClick: (UserData.Result) -> Unit,
 ) : ListAdapter<UserData.Result, RecyclerView.ViewHolder>(UserDiffCallback) {
 

@@ -33,7 +33,7 @@ class UserViewHolder(private val binding: ItemUserBinding, onItemClick: (UserDat
             tvUserNameAge.text = "$name ${item.dob?.age} $gender $country"
             tvEmail.text = "\uD83D\uDCE7 ${item.email}"
             tvHomeNumber.text = "\u260E\uFE0F ${item.cell}"
-            tvPhoneNumber.text = "\uD83D\uDCF1  ${item.phone}"
+            tvPhoneNumber.text = "\uD83D\uDCF1 ${item.phone}"
         }
     }
 

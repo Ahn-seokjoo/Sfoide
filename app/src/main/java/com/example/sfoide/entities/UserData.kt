@@ -60,9 +60,9 @@ data class UserData(
         @Parcelize
         data class Id(
             @SerializedName("name")
-            val name: String,
+            val name: String?,
             @SerializedName("value")
-            val value: @RawValue Any,
+            val value: @RawValue Any?,
         ) : Parcelable
 
         @Parcelize
@@ -74,7 +74,7 @@ data class UserData(
             @SerializedName("country")
             val country: String,
             @SerializedName("postcode")
-            val postcode: Int,
+            val postcode: String,
             @SerializedName("state")
             val state: String,
             @SerializedName("street")

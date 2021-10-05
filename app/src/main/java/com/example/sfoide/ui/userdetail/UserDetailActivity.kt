@@ -1,11 +1,9 @@
 package com.example.sfoide.ui.userdetail
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -60,10 +58,12 @@ class UserDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         binding.tvDetailEmail.setOnClickListener {
-            val emailIntent = Intent(Intent.ACTION_SEND)
-            val addresses = item?.email
-            emailIntent.type = "plain/text"
-            emailIntent.putExtra(Intent.EXTRA_EMAIL, addresses)
+            var addresses = arrayOf(item?.email)
+            val emailIntent = Intent(Intent.ACTION_SEND).apply {
+                `package` = "com.google.android.gm"
+                putExtra(Intent.EXTRA_EMAIL, addresses)
+                type = "*/*"
+            }
             startActivity(emailIntent)
         }
     }
@@ -71,7 +71,6 @@ class UserDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap?) {
         val locationData = intent.getParcelableExtra<UserData.Result>("userData")?.location?.coordinates
         val location = LatLng(locationData?.latitude!!.toDouble(), locationData?.longitude!!.toDouble())
-        Log.d(TAG, "onMapReady: $locationData")
         googleMap?.addMarker(
             MarkerOptions()
                 .position(location)

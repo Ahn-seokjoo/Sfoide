@@ -7,7 +7,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.sfoide.databinding.ActivityMainBinding
 import com.example.sfoide.entities.UserData
 import com.example.sfoide.remote.NetworkManager
@@ -20,26 +19,26 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val adapter = UserListRecyclerViewAdapter(::showUserDetail)
     private var backPressedTime: Long = 0
+    private val result = NetworkManager.UserApi.getUserList(6)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val result = NetworkManager.UserApi.getUserList(6)
         binding.recyclerView.adapter = adapter
 
-        doEnqueue(result)
-        doRefresh(binding.swipeLayout, result)
-        initScrollListener(result)
+        doEnqueue()
+        doRefresh()
+        initScrollListener()
     }
 
-    private fun initScrollListener(result: Call<UserData>) {
+    private fun initScrollListener() {
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (recyclerView.canScrollVertically(1)) {
-                    doEnqueue(result)
+                    doEnqueue()
                 }
             }
         }
@@ -52,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    private fun doEnqueue(result: Call<UserData>) {
+    private fun doEnqueue() {
         result.clone().enqueue(object : Callback<UserData> {
             override fun onResponse(call: Call<UserData>, response: Response<UserData>) {
                 adapter.submitList(response.body()!!.results)
@@ -65,10 +64,10 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun doRefresh(swipe: SwipeRefreshLayout, result: Call<UserData>) {
-        swipe.setOnRefreshListener {
-            doEnqueue(result)
-            swipe.isRefreshing = false // 새로 고침 아이콘 제거
+    private fun doRefresh() {
+        binding.swipeLayout.setOnRefreshListener {
+            doEnqueue()
+            binding.swipeLayout.isRefreshing = false // 새로 고침 아이콘 제거
             Log.d(TAG, "doRefresh: 스와이프됨")
         }
     }

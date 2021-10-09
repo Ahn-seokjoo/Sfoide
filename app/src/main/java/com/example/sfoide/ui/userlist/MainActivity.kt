@@ -50,12 +50,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun doRefresh() {
         binding.swipeLayout.setOnRefreshListener {
-            viewModel.doRefresh()
             adapter.refresh()
             lifecycleScope.launch {
                 adapter.loadStateFlow.collectLatest {
                     when (it.refresh) {
                         is LoadState.NotLoading -> {
+                            binding.recyclerView.smoothScrollToPosition(0)
                             binding.swipeLayout.isRefreshing = false
                         }
                         is LoadState.Loading -> {

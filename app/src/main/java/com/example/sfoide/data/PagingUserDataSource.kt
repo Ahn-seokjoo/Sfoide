@@ -6,8 +6,11 @@ import com.example.sfoide.entities.UserData
 import com.example.sfoide.remote.NetworkManager
 import retrofit2.HttpException
 import java.io.IOException
+import java.util.*
 
-class PagingUserDataSource(private val seedData: Int) : PagingSource<Int, UserData.Result>() {
+class PagingUserDataSource : PagingSource<Int, UserData.Result>() {
+    private var seedData = Random().nextInt()
+
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, UserData.Result> {
         return try {
             var nextPageNumber = params.key ?: FIRST_PAGE

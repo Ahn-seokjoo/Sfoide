@@ -43,9 +43,9 @@ class UserDetailActivity : AppCompatActivity(), OnMapReadyCallback {
             val gender = Gender.getGender(item!!.gender)
             val country = Country.getCountry(item.location!!.country)
             tvUserDetailNameText.text = "$name ${item.dob?.age} $gender $country"
-            tvDetailEmail.text = "\uD83D\uDCE7 ${item?.email}"
-            tvDetailHomeNumber.text = "\u260E\uFE0F ${item?.cell}"
-            tvDetailPhoneNumber.text = "\uD83D\uDCF1 ${item?.phone}"
+            tvDetailEmail.text = "\uD83D\uDCE7 ${item.email}"
+            tvDetailHomeNumber.text = "\u260E\uFE0F ${item.cell}"
+            tvDetailPhoneNumber.text = "\uD83D\uDCF1 ${item.phone}"
         }
         setViewIntentClickListener(item)
     }
@@ -68,7 +68,7 @@ class UserDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap?) {
         val locationData = intent.getParcelableExtra<UserData.Result>("userData")?.location?.coordinates
-        val location = LatLng(locationData?.latitude!!.toDouble(), locationData?.longitude!!.toDouble())
+        val location = LatLng(locationData?.latitude!!.toDouble(), locationData.longitude.toDouble())
         googleMap?.addMarker(
             MarkerOptions()
                 .position(location)

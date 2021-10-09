@@ -1,13 +1,12 @@
 package com.example.sfoide.ui.userlist
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.paging.PagingData
 import com.example.sfoide.databinding.ActivityMainBinding
 import com.example.sfoide.entities.UserData
@@ -53,10 +52,24 @@ class MainActivity : AppCompatActivity() {
         binding.swipeLayout.setOnRefreshListener {
             viewModel.doRefresh()
             adapter.refresh()
-            binding.swipeLayout.isRefreshing = false // 새로 고침 아이콘 제거
-            Log.d(TAG, "doRefresh: 스와이프됨")
+            lifecycleScope.launch {
+                adapter.loadStateFlow.collectLatest {
+                    when (it.refresh) {
+                        is LoadState.NotLoading -> {
+                            binding.swipeLayout.isRefreshing = false
+                        }
+                        is LoadState.Loading -> {
+                            binding.swipeLayout.isRefreshing = true
+                        }
+                        else -> {
+                            Toast.makeText(this@MainActivity, "error", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+            }
         }
     }
+
 
     override fun onBackPressed() {
         if (System.currentTimeMillis() - backPressedTime < 2000) {

@@ -24,7 +24,6 @@ class PagingUserDataSource(private val seedData: Int) : PagingSource<Int, UserDa
         }
     }
 
-
     override fun getRefreshKey(state: PagingState<Int, UserData.Result>): Int? {
         return state.anchorPosition?.let { it ->
             val anchorPage = state.closestPageToPosition(it)
@@ -34,6 +33,6 @@ class PagingUserDataSource(private val seedData: Int) : PagingSource<Int, UserDa
 
     companion object {
         const val FIRST_PAGE = 1
-        const val USER_COUNT = 10
+        const val USER_COUNT = 100
     }
 }

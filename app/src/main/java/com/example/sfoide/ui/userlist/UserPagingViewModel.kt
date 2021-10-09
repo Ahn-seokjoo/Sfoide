@@ -9,7 +9,7 @@ import com.example.sfoide.data.PagingUserDataSource
 import java.util.*
 
 class UserPagingViewModel : ViewModel() {
-    var seedData = 0
+    var seedData = Random().nextInt()
     val flow = Pager(
         PagingConfig(pageSize = 5),
         pagingSourceFactory = { PagingUserDataSource(seedData) }

@@ -1,11 +1,9 @@
 package com.example.sfoide.ui.userlist
 
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.sfoide.databinding.ItemUserBinding
 import com.example.sfoide.entities.UserData
 
 class UserListRecyclerViewAdapter(
@@ -13,9 +11,7 @@ class UserListRecyclerViewAdapter(
 ) : PagingDataAdapter<UserData.Result, RecyclerView.ViewHolder>(UserDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding: ItemUserBinding = ItemUserBinding.inflate(inflater, parent, false)
-        return UserViewHolder(binding, onItemClick)
+        return UserViewHolder(parent, onItemClick)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

@@ -1,6 +1,8 @@
 package com.example.sfoide.ui.userlist
 
 import android.annotation.SuppressLint
+import android.view.LayoutInflater
+import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
@@ -9,8 +11,10 @@ import com.example.sfoide.entities.UserData
 import com.example.sfoide.enums.Country
 import com.example.sfoide.enums.Gender
 
-class UserViewHolder(private val binding: ItemUserBinding, onItemClick: (UserData.Result) -> Unit) : RecyclerView.ViewHolder(binding.root) {
+class UserViewHolder(private val parent: ViewGroup, onItemClick: (UserData.Result) -> Unit) :
+    RecyclerView.ViewHolder(ItemUserBinding.inflate(LayoutInflater.from(parent.context), parent, false).root) {
     private lateinit var item: UserData.Result
+    private val binding = ItemUserBinding.bind(itemView)
 
     init {
         itemView.setOnClickListener {
@@ -37,8 +41,4 @@ class UserViewHolder(private val binding: ItemUserBinding, onItemClick: (UserDat
         }
     }
 
-
 }
-
-
-

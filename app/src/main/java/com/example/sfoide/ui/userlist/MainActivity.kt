@@ -52,18 +52,27 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadNextDataFromApi(offset: Int) {
-        lifecycleScope.launch {
-            val userListData = NetworkManager.UserApi.getUserList(offset, USER_COUNT, seedData)
-            userListData.body()?.results?.forEach { resultUserDataList.add(it) }
-            userRecyclerViewAdapter.submitList(resultUserDataList.toList())
-        }
+        submitUserDataList(offset)
     }
 
     private fun doEnqueue() {
+        submitUserDataList()
+    }
+
+    private fun submitUserDataList(offset: Int? = null) {
         lifecycleScope.launch {
-            val userListData = NetworkManager.UserApi.getUserList(FIRST_PAGE, USER_COUNT, seedData)
-            userListData.body()?.results?.forEach { resultUserDataList.add(it) }
-            userRecyclerViewAdapter.submitList(resultUserDataList.toList())
+            when (offset) {
+                null -> {
+                    val userListData = NetworkManager.UserApi.getUserList(FIRST_PAGE, USER_COUNT, seedData)
+                    userListData.body()?.results?.forEach { resultUserDataList.add(it) }
+                    userRecyclerViewAdapter.submitList(resultUserDataList.toList())
+                }
+                else -> {
+                    val userListData = NetworkManager.UserApi.getUserList(offset, USER_COUNT, seedData)
+                    userListData.body()?.results?.forEach { resultUserDataList.add(it) }
+                    userRecyclerViewAdapter.submitList(resultUserDataList.toList())
+                }
+            }
         }
     }
 
@@ -74,16 +83,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun doRefresh() {
-        binding.swipeLayout.setOnRefreshListener {
-            binding.swipeLayout.isRefreshing = true
-            scrollListener.resetState()
-            lifecycleScope.launch {
-                seedData = Random().nextInt()
-                val userListData = NetworkManager.UserApi.getUserList(FIRST_PAGE, USER_COUNT, seedData)
-                resultUserDataList.clear()
-                userListData.body()?.results?.forEach { resultUserDataList.add(it) }
-                userRecyclerViewAdapter.submitList(resultUserDataList.toList()).also {
-                    binding.swipeLayout.isRefreshing = false
+        with(binding) {
+            swipeLayout.setOnRefreshListener {
+                swipeLayout.isRefreshing = true
+                scrollListener.resetState()
+                lifecycleScope.launch {
+                    resultUserDataList.clear()
+                    seedData = Random().nextInt()
+                    submitUserDataList()
+                    recyclerView.smoothScrollToPosition(0)
+                    swipeLayout.isRefreshing = false
                 }
             }
         }
@@ -96,7 +105,6 @@ class MainActivity : AppCompatActivity() {
         }
         Toast.makeText(this, "뒤로 버튼을 한번 더 누르면 종료", Toast.LENGTH_SHORT).show()
         backPressedTime = System.currentTimeMillis()
-
     }
 
     companion object {

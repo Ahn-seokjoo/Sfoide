@@ -9,41 +9,41 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sfoide.databinding.ActivityMainBinding
 import com.example.sfoide.entities.UserData
-import com.example.sfoide.remote.NetworkManager
+import com.example.sfoide.ext.EndlessRecyclerViewScrollListener
 import com.example.sfoide.ui.userdetail.UserDetailActivity
+import com.example.sfoide.ui.userlist.adapter.UserListRecyclerViewAdapter
 import kotlinx.coroutines.launch
-import java.util.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), UserListContract.View {
     private lateinit var binding: ActivityMainBinding
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
     private val userRecyclerViewAdapter = UserListRecyclerViewAdapter(::showUserDetail)
-    private val resultUserDataList = mutableListOf<UserData.Result>()
     private val linearLayoutManager = LinearLayoutManager(this)
-    private var seedData = Random().nextInt()
     private var backPressedTime: Long = 0
+    private val presenter = UserListPresenter()
 //    private val viewModel by viewModels<UserPagingViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        presenter.takeView(this)
 
+        presenter.loadFirstDataList()
         setScrollListener()
         setRecyclerView()
-        doEnqueue()
         doRefresh()
     }
 
-    private fun setScrollListener() {
+    override fun setScrollListener() {
         scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                loadNextDataFromApi(page)
+                presenter.loadNextDataFromApi(page)
             }
         }
     }
 
-    private fun setRecyclerView() {
+    override fun setRecyclerView() {
         with(binding.recyclerView) {
             layoutManager = linearLayoutManager
             addOnScrollListener(scrollListener)
@@ -51,51 +51,29 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadNextDataFromApi(offset: Int) {
-        submitUserDataList(offset)
-    }
-
-    private fun doEnqueue() {
-        submitUserDataList()
-    }
-
-    private fun submitUserDataList(offset: Int? = null) {
-        lifecycleScope.launch {
-            when (offset) {
-                null -> {
-                    val userListData = NetworkManager.UserApi.getUserList(FIRST_PAGE, USER_COUNT, seedData)
-                    userListData.body()?.results?.forEach { resultUserDataList.add(it) }
-                    userRecyclerViewAdapter.submitList(resultUserDataList.toList())
-                }
-                else -> {
-                    val userListData = NetworkManager.UserApi.getUserList(offset, USER_COUNT, seedData)
-                    userListData.body()?.results?.forEach { resultUserDataList.add(it) }
-                    userRecyclerViewAdapter.submitList(resultUserDataList.toList())
-                }
-            }
-        }
-    }
-
-    private fun showUserDetail(item: UserData.Result) {
-        val intent = Intent(this, UserDetailActivity::class.java)
-        intent.putExtra("userData", item)
-        startActivity(intent)
-    }
-
-    private fun doRefresh() {
+    override fun doRefresh() {
         with(binding) {
             swipeLayout.setOnRefreshListener {
                 swipeLayout.isRefreshing = true
                 scrollListener.resetState()
                 lifecycleScope.launch {
-                    resultUserDataList.clear()
-                    seedData = Random().nextInt()
-                    submitUserDataList()
+                    presenter.clearUserListData()
+                    presenter.loadFirstDataList() // 요기
                     recyclerView.smoothScrollToPosition(0)
                     swipeLayout.isRefreshing = false
                 }
             }
         }
+    }
+
+    override fun showUserDetail(item: UserData.Result) {
+        val intent = Intent(this, UserDetailActivity::class.java)
+        intent.putExtra("userData", item)
+        startActivity(intent)
+    }
+
+    override fun submitList(userItemList: List<UserData.Result>) {
+        userRecyclerViewAdapter.submitList(userItemList.toList())
     }
 
     override fun onBackPressed() {
@@ -106,6 +84,7 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "뒤로 버튼을 한번 더 누르면 종료", Toast.LENGTH_SHORT).show()
         backPressedTime = System.currentTimeMillis()
     }
+
 
     companion object {
         const val FIRST_PAGE = 1

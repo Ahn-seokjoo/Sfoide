@@ -2,8 +2,8 @@ package com.example.sfoide.data
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.example.sfoide.data.source.remote.NetworkManager
 import com.example.sfoide.entities.UserData
-import com.example.sfoide.remote.NetworkManager
 import com.example.sfoide.ui.userlist.MainActivity
 import retrofit2.HttpException
 import java.io.IOException

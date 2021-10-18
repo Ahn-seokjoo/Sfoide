@@ -1,4 +1,4 @@
-package com.example.sfoide.ui.userlist
+package com.example.sfoide.ui.userlist.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -28,4 +28,5 @@ class UserListRecyclerViewAdapter(
         }
 
     }
+
 }

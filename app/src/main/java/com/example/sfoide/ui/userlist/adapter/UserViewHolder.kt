@@ -1,4 +1,4 @@
-package com.example.sfoide.ui.userlist
+package com.example.sfoide.ui.userlist.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

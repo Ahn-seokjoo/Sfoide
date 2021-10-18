@@ -1,4 +1,4 @@
-package com.example.sfoide.ui.userlist
+package com.example.sfoide.ext
 
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager

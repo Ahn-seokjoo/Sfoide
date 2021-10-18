@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sfoide.databinding.ActivityMainBinding
@@ -12,7 +11,6 @@ import com.example.sfoide.entities.UserData
 import com.example.sfoide.ext.EndlessRecyclerViewScrollListener
 import com.example.sfoide.ui.userdetail.UserDetailActivity
 import com.example.sfoide.ui.userlist.adapter.UserListRecyclerViewAdapter
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), UserListContract.View {
     private lateinit var binding: ActivityMainBinding
@@ -56,12 +54,10 @@ class MainActivity : AppCompatActivity(), UserListContract.View {
             swipeLayout.setOnRefreshListener {
                 swipeLayout.isRefreshing = true
                 scrollListener.resetState()
-                lifecycleScope.launch {
-                    presenter.clearUserListData()
-                    presenter.loadFirstDataList() // 요기
-                    recyclerView.smoothScrollToPosition(0)
-                    swipeLayout.isRefreshing = false
-                }
+                presenter.clearUserListData()
+                presenter.loadFirstDataList()
+                recyclerView.smoothScrollToPosition(0)
+                swipeLayout.isRefreshing = false
             }
         }
     }

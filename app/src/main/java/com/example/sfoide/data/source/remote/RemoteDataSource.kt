@@ -12,7 +12,7 @@ import java.util.*
 
 class RemoteDataSource(private val presenter: UserListPresenter) : UserListDataSource {
     private val resultUserDataList = mutableListOf<UserData.Result>()
-    private var seedData = Random().nextInt()
+    private var seedData: Int = 0
 
     override fun remoteGetUserList(offset: Int?) =
         CoroutineScope(Dispatchers.IO).launch {

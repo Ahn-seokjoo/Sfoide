@@ -20,20 +20,11 @@ interface UserListContract {
         fun onBackPressed()
 
         // Data Adapter 로 Submit
-        fun submitList(userItemList: List<UserData.Result>)
+        fun submitList()
     }
 
     interface Presenter {
-        // 처음 어플리케이션 실행시에 데이터 요청
-        fun loadFirstDataList()
-
-        // 무한 스크롤 구현 시 끝에 도착했을 때 다음 데이터 요청
-        fun loadNextDataFromApi(offset: Int)
-
-        // 다시 뷰로 데이터 보내줌
-        fun fetchUserListData(userItemList: List<UserData.Result>)
-
-        // 데이터 제거
-        fun clearUserListData()
+        // 데이터를 가져오기
+        suspend fun loadDataList(seed: Int, page: Int): List<UserData.Result>
     }
 }

@@ -1,7 +1,9 @@
 package com.example.sfoide.ui.userlist
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +13,11 @@ import com.example.sfoide.entities.UserData
 import com.example.sfoide.ext.EndlessRecyclerViewScrollListener
 import com.example.sfoide.ui.userdetail.UserDetailActivity
 import com.example.sfoide.ui.userlist.adapter.UserListRecyclerViewAdapter
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.random.Random
 
 class MainActivity : AppCompatActivity(), UserListContract.View {
     private lateinit var binding: ActivityMainBinding
@@ -18,31 +25,49 @@ class MainActivity : AppCompatActivity(), UserListContract.View {
     private val userRecyclerViewAdapter = UserListRecyclerViewAdapter(::showUserDetail)
     private val linearLayoutManager = LinearLayoutManager(this)
     private var backPressedTime: Long = 0
-    private val presenter = UserListPresenter()
-//    private val viewModel by viewModels<UserPagingViewModel>()
+    private val presenter = UserListPresenter(this)
+    private var seed: Int = Random.nextInt()
+
+    //    private val viewModel by viewModels<UserPagingViewModel>()
+    // 여기서 리스트를 들고 있고, 서버를 통신해서 가져온 리스트는ㅇ ㅕ기서 가지고 있음!  -> -> <- <- 말그대로 서버와 통신만 !!! + 어떤 구조가 더 좋을지 생각을 해봅시다
+    private var userItemList: MutableList<UserData.Result> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        presenter.takeView(this)
 
-        presenter.loadFirstDataList()
+        firstDataSubmit()
         setScrollListener()
         setRecyclerView()
         doRefresh()
     }
 
+    private fun firstDataSubmit() {
+        CoroutineScope(Dispatchers.IO).launch {
+            userItemList.addAll(presenter.loadDataList(seed, FIRST_PAGE))
+            withContext(Dispatchers.Main) {
+                submitList()
+            }
+        }
+    }
+
     override fun setScrollListener() {
         scrollListener = object : EndlessRecyclerViewScrollListener(linearLayoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-                presenter.loadNextDataFromApi(page)
+                Log.d(TAG, "onLoadMore: 끝에 도착 page=$page")
+                CoroutineScope(Dispatchers.IO).launch {
+                    userItemList.addAll(presenter.loadDataList(seed, page))
+                    withContext(Dispatchers.Main) {
+                        submitList()
+                    }
+                }
             }
         }
     }
 
     override fun setRecyclerView() {
-        with(binding.recyclerView) {
+        (binding.recyclerView).apply {
             layoutManager = linearLayoutManager
             addOnScrollListener(scrollListener)
             adapter = userRecyclerViewAdapter
@@ -54,10 +79,17 @@ class MainActivity : AppCompatActivity(), UserListContract.View {
             swipeLayout.setOnRefreshListener {
                 swipeLayout.isRefreshing = true
                 scrollListener.resetState()
-                presenter.clearUserListData()
-                presenter.loadFirstDataList()
-                recyclerView.smoothScrollToPosition(0)
-                swipeLayout.isRefreshing = false
+
+                seed = Random.nextInt()
+                userItemList.clear()
+                CoroutineScope(Dispatchers.IO).launch {
+                    userItemList.addAll(presenter.loadDataList(seed, FIRST_PAGE))
+                    withContext(Dispatchers.Main) {
+                        submitList()
+                        swipeLayout.isRefreshing = false
+                        recyclerView.smoothScrollToPosition(0)
+                    }
+                }
             }
         }
     }
@@ -68,8 +100,8 @@ class MainActivity : AppCompatActivity(), UserListContract.View {
         startActivity(intent)
     }
 
-    override fun submitList(userItemList: List<UserData.Result>) {
-        userRecyclerViewAdapter.submitList(userItemList.toList())
+    override fun submitList() {
+        userRecyclerViewAdapter.submitList(userItemList.toMutableList())
     }
 
     override fun onBackPressed() {
@@ -86,5 +118,4 @@ class MainActivity : AppCompatActivity(), UserListContract.View {
         const val FIRST_PAGE = 1
         const val USER_COUNT = 40
     }
-
 }

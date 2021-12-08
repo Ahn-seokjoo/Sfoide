@@ -3,31 +3,14 @@ package com.example.sfoide.ui.userlist
 import com.example.sfoide.data.source.remote.RemoteDataSource
 import com.example.sfoide.entities.UserData
 
-class UserListPresenter :
+class UserListPresenter(private val view: UserListContract.View) :
     UserListContract.Presenter {
 
-    private var userListView: UserListContract.View? = null
+    // 뷰, 모델 연결 + 비즈니스 로직
     private val userListRemoteDataSource: RemoteDataSource = RemoteDataSource()
 
-    fun takeView(view: UserListContract.View) {
-        userListView = view
+    override suspend fun loadDataList(seed: Int, page: Int): List<UserData.Result> {
+        return userListRemoteDataSource.remoteGetUserList(seed, page)
     }
-
-    override fun loadFirstDataList() {
-        userListRemoteDataSource.remoteGetUserList(null, ::fetchUserListData)
-    }
-
-    override fun loadNextDataFromApi(offset: Int) {
-        userListRemoteDataSource.remoteGetUserList(offset, ::fetchUserListData)
-    }
-
-    override fun fetchUserListData(userItemList: List<UserData.Result>) {
-        userListView?.submitList(userItemList)
-    }
-
-    override fun clearUserListData() {
-        userListRemoteDataSource.clearUserListData(::fetchUserListData)
-    }
-
 
 }

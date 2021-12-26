@@ -15,7 +15,7 @@ class UserListRecyclerViewAdapter(
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        (holder as UserViewHolder).bind(getItem(position)!!)
+        (holder as UserViewHolder).bind(getItem(position))
     }
 
     object UserDiffCallback : DiffUtil.ItemCallback<UserData.Result>() {

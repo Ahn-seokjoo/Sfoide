@@ -22,7 +22,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 class UserDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityUserDetailBinding
 
-    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserDetailBinding.inflate(layoutInflater)
@@ -33,6 +32,12 @@ class UserDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val item = intent.getParcelableExtra<UserData.Result>("userData")
 
+        setUserData(item)
+        setViewIntentClickListener(item)
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setUserData(item: UserData.Result?) {
         with(binding) {
             Glide.with(ivDetailUserImage)
                 .load(item?.picture?.large)
@@ -40,14 +45,13 @@ class UserDetailActivity : AppCompatActivity(), OnMapReadyCallback {
                 .into(ivDetailUserImage)
 
             val name = item?.name?.last + item?.name?.first
-            val gender = Gender.getGender(item!!.gender)
-            val country = Country.getCountry(item.location!!.country)
-            tvUserDetailNameText.text = "$name ${item.dob?.age} $gender $country"
-            tvDetailEmail.text = "\uD83D\uDCE7 ${item.email}"
-            tvDetailHomeNumber.text = "\u260E\uFE0F ${item.cell}"
-            tvDetailPhoneNumber.text = "\uD83D\uDCF1 ${item.phone}"
+            val gender = item?.gender?.let { Gender.getGender(it) }
+            val country = item?.location?.country?.let { Country.getCountry(it) }
+            tvUserDetailNameText.text = "$name ${item?.dob?.age} $gender $country"
+            tvDetailEmail.text = "\uD83D\uDCE7 ${item?.email}"
+            tvDetailHomeNumber.text = "\u260E\uFE0F ${item?.cell}"
+            tvDetailPhoneNumber.text = "\uD83D\uDCF1 ${item?.phone}"
         }
-        setViewIntentClickListener(item)
     }
 
     private fun setViewIntentClickListener(item: UserData.Result?) {
@@ -68,7 +72,7 @@ class UserDetailActivity : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onMapReady(googleMap: GoogleMap?) {
         val locationData = intent.getParcelableExtra<UserData.Result>("userData")?.location?.coordinates
-        val location = LatLng(locationData?.latitude!!.toDouble(), locationData.longitude.toDouble())
+        val location = locationData?.latitude?.toDouble()?.let { LatLng(it, locationData.longitude.toDouble()) }
         googleMap?.addMarker(
             MarkerOptions()
                 .position(location)

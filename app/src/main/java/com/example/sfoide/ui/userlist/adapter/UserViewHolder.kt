@@ -33,7 +33,7 @@ class UserViewHolder(private val parent: ViewGroup, onItemClick: (UserData.Resul
 
             val name = item.name.last + item.name.first
             val gender = Gender.getGender(item.gender)
-            val country = Country.getCountry(item.location!!.country)
+            val country = item.location?.country?.let { Country.getCountry(it) }
             tvUserNameAge.text = "$name ${item.dob?.age} $gender $country"
             tvEmail.text = "\uD83D\uDCE7 ${item.email}"
             tvHomeNumber.text = "\u260E\uFE0F ${item.cell}"

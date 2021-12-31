@@ -1,4 +1,4 @@
-package com.example.sfoide.remote
+package com.example.sfoide.data.source.remote
 
 import com.example.sfoide.entities.UserData
 import retrofit2.Response

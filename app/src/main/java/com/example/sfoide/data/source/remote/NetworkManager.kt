@@ -1,4 +1,4 @@
-package com.example.sfoide.remote
+package com.example.sfoide.data.source.remote
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

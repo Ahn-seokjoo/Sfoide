@@ -25,29 +25,29 @@ data class UserData(
     @Parcelize
     data class Result(
         @SerializedName("cell")
-        val cell: String,
+        val cell: String? = null,
         @SerializedName("dob")
-        val dob: Dob?,
+        val dob: Dob? = null,
         @SerializedName("email")
-        val email: String,
+        val email: String? = null,
         @SerializedName("gender")
-        val gender: String,
+        val gender: String? = null,
         @SerializedName("id")
-        val id: Id?,
+        val id: Id? = null,
         @SerializedName("location")
-        val location: Location?,
+        val location: Location? = null,
         @SerializedName("login")
-        val login: Login,
+        val login: Login? = null,
         @SerializedName("name")
-        val name: Name,
+        val name: Name? = null,
         @SerializedName("nat")
-        val nat: String,
+        val nat: String? = null,
         @SerializedName("phone")
-        val phone: String,
+        val phone: String? = null,
         @SerializedName("picture")
-        val picture: Picture,
+        val picture: Picture? = null,
         @SerializedName("registered")
-        val registered: Registered?,
+        val registered: Registered? = null,
     ) : Parcelable {
         @Parcelize
         data class Dob(

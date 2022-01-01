@@ -5,27 +5,26 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import androidx.databinding.DataBindingUtil
 import com.example.sfoide.R
 import com.example.sfoide.databinding.ActivityUserDetailBinding
 import com.example.sfoide.entities.UserData
-import com.example.sfoide.enums.Country
-import com.example.sfoide.enums.Gender
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UserDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var binding: ActivityUserDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityUserDetailBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_user_detail)
+        binding.lifecycleOwner = this
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
         mapFragment?.getMapAsync(this)
@@ -39,18 +38,8 @@ class UserDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     @SuppressLint("SetTextI18n")
     private fun setUserData(item: UserData.Result?) {
         with(binding) {
-            Glide.with(ivDetailUserImage)
-                .load(item?.picture?.large)
-                .transform(CircleCrop())
-                .into(ivDetailUserImage)
-
-            val name = item?.name?.last + item?.name?.first
-            val gender = item?.gender?.let { Gender.getGender(it) }
-            val country = item?.location?.country?.let { Country.getCountry(it) }
-            tvUserDetailNameText.text = "$name ${item?.dob?.age} $gender $country"
-            tvDetailEmail.text = "\uD83D\uDCE7 ${item?.email}"
-            tvDetailHomeNumber.text = "\u260E\uFE0F ${item?.cell}"
-            tvDetailPhoneNumber.text = "\uD83D\uDCF1 ${item?.phone}"
+            userDataList = item
+            executePendingBindings()
         }
     }
 

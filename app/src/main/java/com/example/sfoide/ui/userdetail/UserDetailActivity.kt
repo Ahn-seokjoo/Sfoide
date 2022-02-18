@@ -50,7 +50,7 @@ class UserDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         binding.tvDetailEmail.setOnClickListener {
-            var addresses = arrayOf(item?.email)
+            val addresses = arrayOf(item?.email)
             val emailIntent = Intent(Intent.ACTION_SEND).apply {
                 putExtra(Intent.EXTRA_EMAIL, addresses)
                 type = "plain/text"
@@ -59,13 +59,13 @@ class UserDetailActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    override fun onMapReady(googleMap: GoogleMap?) {
+    override fun onMapReady(googleMap: GoogleMap) {
         val locationData = intent.getParcelableExtra<UserData.Result>("userData")?.location?.coordinates
         val location = locationData?.latitude?.toDouble()?.let { LatLng(it, locationData.longitude.toDouble()) }
-        googleMap?.addMarker(
+        googleMap.addMarker(
             MarkerOptions()
-                .position(location)
+                .position(location!!)
         )
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLng(location))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
     }
 }

@@ -3,11 +3,14 @@ package com.example.sfoide.ext
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.lifecycle.LiveData
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.sfoide.entities.UserData
 import com.example.sfoide.enums.Country
 import com.example.sfoide.enums.Gender
+import com.example.sfoide.ui.userlist.adapter.UserListRecyclerViewAdapter
 
 object BindingAdapter {
     @JvmStatic
@@ -15,7 +18,7 @@ object BindingAdapter {
     fun ImageView.bindImageUrl(url: String?) {
         Glide.with(this)
             .load(url)
-            .transform(CircleCrop())
+            .transform(RoundedCorners(20))
             .into(this)
     }
 
@@ -31,18 +34,26 @@ object BindingAdapter {
     @JvmStatic
     @BindingAdapter("addEmailImoji")
     fun TextView.addEmailImoji(email: String) {
-        this.text = "\uD83D\uDCE7 $email}"
+        this.text = "\uD83D\uDCE7 $email"
     }
 
     @JvmStatic
     @BindingAdapter("addCellImoji")
     fun TextView.addCellImoji(cell: String) {
-        this.text = "\u260E\uFE0F $cell}"
+        this.text = "\u260E\uFE0F $cell"
     }
 
     @JvmStatic
     @BindingAdapter("addPhoneImoji")
     fun TextView.addPhoneImoji(phone: String) {
-        this.text = "\uD83D\uDCF1 $phone}"
+        this.text = "\uD83D\uDCF1 $phone"
+    }
+
+    @JvmStatic
+    @BindingAdapter("bindData")
+    fun RecyclerView.bindData(userList: LiveData<List<UserData.Result>>?) {
+        userList?.let {
+            (adapter as UserListRecyclerViewAdapter).submitList(it.value?.toMutableList())
+        }
     }
 }

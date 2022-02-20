@@ -9,6 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sfoide.R
+import com.example.sfoide.data.source.remote.RemoteDataSource
 import com.example.sfoide.databinding.ActivityMainBinding
 import com.example.sfoide.entities.UserData
 import com.example.sfoide.ext.EndlessRecyclerViewScrollListener
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity(), UserListContract.View {
     private lateinit var binding: ActivityMainBinding
     private lateinit var scrollListener: EndlessRecyclerViewScrollListener
     private val userRecyclerViewAdapter = UserListRecyclerViewAdapter(::showUserDetail)
-    private val presenter = UserListPresenter(this)
+    private val presenter = UserListPresenter(this, RemoteDataSource())
     private var seed: Int = Random.nextInt()
 
     private val compositeDisposable = CompositeDisposable()

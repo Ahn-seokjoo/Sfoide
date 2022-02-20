@@ -1,59 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/iv_detail_user_image"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        tools:src="@tools:sample/avatars" />
+    <data>
 
-    <TextView
-        android:id="@+id/tv_user_detail_name_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:textSize="20sp"
-        tools:text="1asf123 (63)" />
+        <variable
+            name="userdata"
+            type="com.example.sfoide.entities.UserData.Result" />
+    </data>
 
-    <TextView
-        android:id="@+id/tv_detail_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:textSize="15sp"
-        tools:text="example@example.com" />
-
-    <TextView
-        android:id="@+id/tv_detail_home_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:textSize="15sp"
-        tools:text="939-381-1920" />
-
-    <TextView
-        android:id="@+id/tv_detail_phone_number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:textSize="15sp"
-        tools:text="011-1234-5678" />
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.userdetail.UserDetailActivity" />
+        android:orientation="vertical">
 
-</LinearLayout>
+        <ImageView
+            android:id="@+id/iv_detail_user_image"
+            bindLargeImage="@{userdata.picture.large}"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            tools:src="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/tv_user_detail_name_text"
+            bindNameAndAge="@{userdata}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textSize="20sp"
+            tools:text="1asf123 (63)" />
+
+        <TextView
+            android:id="@+id/tv_detail_email"
+            bindEmail="@{userdata.email}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textSize="15sp"
+            tools:text="example@example.com" />
+
+        <TextView
+            android:id="@+id/tv_detail_home_number"
+            bindCell="@{userdata.cell}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textSize="15sp"
+            tools:text="939-381-1920" />
+
+        <TextView
+            android:id="@+id/tv_detail_phone_number"
+            bindPhone="@{userdata.phone}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:textSize="15sp"
+            tools:text="011-1234-5678" />
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.userdetail.UserDetailActivity" />
+
+    </LinearLayout>
+</layout>

@@ -20,7 +20,7 @@ class UserListRecyclerViewAdapter(
 
     object UserDiffCallback : DiffUtil.ItemCallback<UserData.Result>() {
         override fun areItemsTheSame(oldItem: UserData.Result, newItem: UserData.Result): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem === newItem
         }
 
         override fun areContentsTheSame(oldItem: UserData.Result, newItem: UserData.Result): Boolean {

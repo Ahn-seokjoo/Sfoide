@@ -20,7 +20,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
 
-        <activity android:name="com.example.sfoide.ui.userlist.MainActivity">
+        <activity
+            android:name="com.example.sfoide.ui.userlist.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
                 <action android:name="android.intent.action.MAIN" />

@@ -1,13 +1,13 @@
 package com.example.sfoide.ui.userdetail
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.View
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import com.example.sfoide.R
-import com.example.sfoide.databinding.ActivityUserDetailBinding
+import com.example.sfoide.databinding.FragmentUserdetailBinding
 import com.example.sfoide.entities.UserData
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -18,24 +18,25 @@ import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class UserDetailActivity : AppCompatActivity(), OnMapReadyCallback {
-    private lateinit var binding: ActivityUserDetailBinding
+class UserDetailFragment : Fragment(R.layout.fragment_userdetail), OnMapReadyCallback {
+    private lateinit var _binding: FragmentUserdetailBinding
+    private val binding get() = _binding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_user_detail)
-        binding.lifecycleOwner = this
-
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
-        mapFragment?.getMapAsync(this)
-
-        val item = intent.getParcelableExtra<UserData.Result>("userData")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        _binding = DataBindingUtil.bind(view) ?: throw IllegalStateException("fail to bind")
+        val item = arguments?.getParcelable<UserData.Result>("userList")
 
         setUserData(item)
         setViewIntentClickListener(item)
+        passOnMapData()
     }
 
-    @SuppressLint("SetTextI18n")
+    private fun passOnMapData() {
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
+        mapFragment?.getMapAsync(this)
+    }
+
     private fun setUserData(item: UserData.Result?) {
         with(binding) {
             userDataList = item
@@ -60,12 +61,17 @@ class UserDetailActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
-        val locationData = intent.getParcelableExtra<UserData.Result>("userData")?.location?.coordinates
-        val location = locationData?.latitude?.toDouble()?.let { LatLng(it, locationData.longitude.toDouble()) }
+        val locationData = arguments?.getParcelable<UserData.Result>("userList")?.location?.coordinates
+        val location = LatLng(locationData?.latitude?.toDouble()!!, locationData.longitude.toDouble())
         googleMap.addMarker(
             MarkerOptions()
-                .position(location!!)
+                .position(location)
         )
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(location))
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.unbind()
     }
 }

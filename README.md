@@ -7,7 +7,7 @@ page당 40명의 데이터를 가져와 RecyclerView에 표시하고, 무한 스
 MVVM 패턴과 Clean Architecture를 적용했으며, 다른 브랜치에 MVP 패턴또한 구현했습니다.
 item을 클릭시에 상세 정보 페이지에 들어가며, 이메일과 핸드폰 번호를 클릭시 Intent를 통해 메일, 전화 기능을 추가했습니다. 
 
-### Tech stack
+### Tech spec
 ---
 - Kotlin
 

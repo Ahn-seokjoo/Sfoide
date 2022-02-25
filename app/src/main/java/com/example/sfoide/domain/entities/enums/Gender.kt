@@ -1,4 +1,4 @@
-package com.example.sfoide.enums
+package com.example.sfoide.domain.entities.enums
 
 enum class Gender(val gender: String, val genderData: String) {
     UNKNOWN("", ""),

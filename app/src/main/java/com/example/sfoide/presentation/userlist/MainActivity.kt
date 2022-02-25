@@ -1,4 +1,4 @@
-package com.example.sfoide.ui.userlist
+package com.example.sfoide.presentation.userlist
 
 import android.os.Bundle
 import android.widget.Toast
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         addUserListFragment()
-        setEndDoubleClick()
+        setBackButtonDoubleClick()
     }
 
     private fun addUserListFragment() {
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setEndDoubleClick() {
+    private fun setBackButtonDoubleClick() {
         subject.buffer(2, 1)
             .map {
                 it[0] to it[1]

@@ -11,7 +11,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/Theme.Sfoide">
 
         <meta-data
@@ -22,7 +22,7 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity
-            android:name="com.example.sfoide.ui.userlist.MainActivity"
+            android:name="com.example.sfoide.presentation.userlist.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />

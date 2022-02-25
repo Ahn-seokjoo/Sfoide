@@ -6,7 +6,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.sfoide.ui.userlist.UserListViewModel" />
+            type="com.example.sfoide.presentation.userlist.UserListViewModel" />
 
         <import type="android.view.View" />
     </data>

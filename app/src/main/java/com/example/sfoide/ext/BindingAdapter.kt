@@ -7,10 +7,10 @@ import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.sfoide.entities.UserData
-import com.example.sfoide.enums.Country
-import com.example.sfoide.enums.Gender
-import com.example.sfoide.ui.userlist.adapter.UserListRecyclerViewAdapter
+import com.example.sfoide.domain.entities.UserData
+import com.example.sfoide.domain.entities.enums.Country
+import com.example.sfoide.domain.entities.enums.Gender
+import com.example.sfoide.presentation.userlist.recyclerview.UserListRecyclerViewAdapter
 
 object BindingAdapter {
     @JvmStatic
@@ -24,11 +24,9 @@ object BindingAdapter {
 
     @JvmStatic
     @BindingAdapter("addInformation")
-    fun TextView.addInformation(information: UserData.Result) {
-        val name = information.name?.last + information.name?.first
-        val country = information.location?.country?.let { Country.getCountry(it) }
-        val gender = information.gender?.let { Gender.getGender(it) }
-        this.text = "$name ${information.dob?.age} $gender $country"
+    fun TextView.addInformation(information: UserData) {
+        this.text =
+            "\u200E ${information.name}\u200E ${information.age} ${Gender.getGender(information.gender)} ${Country.getCountry(information.country)}"
     }
 
     @JvmStatic
@@ -51,9 +49,9 @@ object BindingAdapter {
 
     @JvmStatic
     @BindingAdapter("bindData")
-    fun RecyclerView.bindData(userList: LiveData<List<UserData.Result>>?) {
+    fun RecyclerView.bindData(userList: LiveData<List<UserData>>?) {
         userList?.let {
-            (adapter as UserListRecyclerViewAdapter).submitList(it.value?.toMutableList())
+            (adapter as UserListRecyclerViewAdapter).submitList(it.value?.toList())
         }
     }
 }

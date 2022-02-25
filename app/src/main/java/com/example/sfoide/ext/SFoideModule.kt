@@ -1,8 +1,10 @@
 package com.example.sfoide.ext
 
-import com.example.sfoide.data.source.RemoteUserListDataSource
-import com.example.sfoide.data.source.remote.RemoteDataSourceImpl
-import com.example.sfoide.data.source.remote.UserApi
+import com.example.sfoide.data.repository.remote.RemoteUserListDataSource
+import com.example.sfoide.data.repository.remote.RemoteUserListDataSourceImpl
+import com.example.sfoide.data.repository.remote.UserApi
+import com.example.sfoide.domain.usecases.GetUserListUseCase
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,25 +16,31 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object SFoideModule {
-    private const val BASE_URL = "https://randomuser.me/"
-
+abstract class SFoideModule {
+    @Binds
     @Singleton
-    @Provides
-    fun provideRemoteUserListDataSource(userApi: UserApi): RemoteUserListDataSource =
-        RemoteDataSourceImpl(userApi)
+    abstract fun bindUserListDataSource(remoteUserListDataSource: RemoteUserListDataSourceImpl): RemoteUserListDataSource
 
-    @Singleton
-    @Provides
-    fun provideRetrofit(): Retrofit =
-        Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+    companion object {
 
-    @Singleton
-    @Provides
-    fun provideUserApi(retrofit: Retrofit): UserApi =
-        retrofit.create(UserApi::class.java)
+        @Singleton
+        @Provides
+        fun provideRetrofit(): Retrofit =
+            Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+        @Singleton
+        @Provides
+        fun provideUserApi(retrofit: Retrofit): UserApi =
+            retrofit.create(UserApi::class.java)
+
+        @Singleton
+        @Provides
+        fun provideRemoteUseCase(remoteUserListDataSource: RemoteUserListDataSource) = GetUserListUseCase(remoteUserListDataSource)
+
+        private const val BASE_URL = "https://randomuser.me/"
+    }
 }

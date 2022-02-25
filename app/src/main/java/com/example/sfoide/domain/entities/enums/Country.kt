@@ -1,4 +1,4 @@
-package com.example.sfoide.enums
+package com.example.sfoide.domain.entities.enums
 
 enum class Country(val country: String, val countryEmoji: String) {
     UNKNOWN("", ""),

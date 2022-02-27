@@ -35,8 +35,8 @@ class UserDetailFragment : Fragment(R.layout.fragment_userdetail), OnMapReadyCal
     }
 
     private fun passOnMapData() {
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as? SupportMapFragment
-        mapFragment?.getMapAsync(this)
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
     }
 
     private fun setUserData(item: UserData?) {

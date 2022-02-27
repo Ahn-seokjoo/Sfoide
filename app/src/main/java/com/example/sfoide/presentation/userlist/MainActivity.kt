@@ -23,7 +23,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
-        addUserListFragment()
+        if (savedInstanceState == null) {
+            addUserListFragment()
+        }
         setBackButtonDoubleClick()
     }
 

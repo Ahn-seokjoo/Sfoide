@@ -1,5 +1,7 @@
 package com.example.sfoide.ext
 
+import android.content.res.Resources
+import android.view.Surface
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -16,10 +18,19 @@ object BindingAdapter {
     @JvmStatic
     @BindingAdapter("bindImageUrl")
     fun ImageView.bindImageUrl(url: String?) {
-        Glide.with(this)
-            .load(url)
-            .transform(RoundedCorners(20))
-            .into(this)
+        if (checkRotation()) {
+            Glide.with(this)
+                .load(url)
+                .override(100, 100)
+                .transform(RoundedCorners(20))
+                .into(this)
+        } else {
+            Glide.with(this)
+                .load(url)
+                .override(250, 250)
+                .transform(RoundedCorners(20))
+                .into(this)
+        }
     }
 
     @JvmStatic
@@ -54,4 +65,7 @@ object BindingAdapter {
             (adapter as UserListRecyclerViewAdapter).submitList(it.value?.toList())
         }
     }
+
+    private fun checkRotation() =
+        Resources.getSystem().configuration.orientation == Surface.ROTATION_90 || Resources.getSystem().configuration.orientation == Surface.ROTATION_270
 }

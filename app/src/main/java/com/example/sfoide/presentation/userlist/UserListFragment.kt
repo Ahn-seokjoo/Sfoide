@@ -31,7 +31,9 @@ class UserListFragment : Fragment(R.layout.fragment_userlist) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        firstDataSubmit()
+        if (savedInstanceState == null) {
+            firstDataSubmit()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,8 +90,8 @@ class UserListFragment : Fragment(R.layout.fragment_userlist) {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         binding.unbind()
+        super.onDestroyView()
     }
 
     companion object {

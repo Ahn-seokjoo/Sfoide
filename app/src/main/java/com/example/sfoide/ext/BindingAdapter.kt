@@ -1,7 +1,7 @@
 package com.example.sfoide.ext
 
+import android.content.res.Configuration
 import android.content.res.Resources
-import android.view.Surface
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -67,5 +67,5 @@ object BindingAdapter {
     }
 
     private fun checkRotation() =
-        Resources.getSystem().configuration.orientation == Surface.ROTATION_90 || Resources.getSystem().configuration.orientation == Surface.ROTATION_270
+        Resources.getSystem().configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 }

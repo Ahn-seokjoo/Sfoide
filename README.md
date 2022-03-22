@@ -12,7 +12,7 @@ item을 클릭시에 상세 정보 페이지에 들어가며, 이메일과 핸�
 - Kotlin
 
 - MVVM Clean Architecture
-- RxJava, RxKotlin
+- RxJava
 - AAC ViewModel, LiveData, Databinding
 - Hilt
 
